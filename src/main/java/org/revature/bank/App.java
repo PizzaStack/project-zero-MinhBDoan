@@ -1,127 +1,82 @@
 package org.revature.bank;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
-/**
- * Hello world!
- *
- */
+import org.revature.bankEmployee.BankEmployee;
+
+
 public class App 
 {
-    public static void main( String[] args )
-    {
-    	boolean quit = false;
-    	Scanner input = new Scanner(System.in);    	
-    	System.out.println("Log in username: ");
-    	String username = input.next();
-    	
-    	
-    	System.out.println("Type in password: ");
-    	String password = input.next();
-    	BankingAccount user = new BankingAccount(username, password);
-    	if(username.equals(username) && password.equals(password)) {
-    		System.out.println("Welcome " + username);
-    		
-    	}
-    	
-    	char option ='\0';
-		Scanner scanner = new Scanner(System.in);
-		
-		
-		System.out.println("A.Get Checking Balance");
-		System.out.println("B.Get Savings Balance");
-		System.out.println("C.Withdraw Checking");
-		System.out.println("D.Withdraw Savings");
-		System.out.println("E.Deposit Checking");
-		System.out.println("F.Deposit Savings");
-		System.out.println("G.Transfer to Checking");
-		System.out.println("H.Transfer to Savings");
-		System.out.println("I.Exit");
-		
-		do
-		{
-			System.out.println("===================================================");
-			System.out.println("Enter Option");
-			System.out.println("===================================================");
-			option = scanner.next().charAt(0);
-			System.out.println("\n");
-			
-		switch(option) {
-		case 'A':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Checking Balance = " + user.getCheckingBalance());
-			System.out.println("-------------------------------------------------------");
-			break;
-		case 'B':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Savings Balance = " + user.getSavingsBalance());
-			System.out.println("-------------------------------------------------------");
-			break;
-		case 'C':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter Withdrawal Amount For Checking");
-			System.out.println("-------------------------------------------------------");
-			double amount = scanner.nextDouble();
-			user.checkingbalancewithdraw(amount);
-			System.out.println("\n");
-			break;
-		case 'D':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter Withdrawal Amount For Savings");
-			System.out.println("-------------------------------------------------------");
-			amount = scanner.nextDouble();
-			user.savingsbalancewithdraw(amount);
-			System.out.println("\n");
-			break;
-		case 'E':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter Deposit Amount into Checking");
-			System.out.println("-------------------------------------------------------");
-			amount = scanner.nextDouble();
-			user.checkingbalancedeposit(amount);
-			System.out.println("\n");
-			break;
-		case 'F':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter Deposit Amount into Savings");
-			System.out.println("-------------------------------------------------------");
-			amount = scanner.nextDouble();
-			user.savingsbalancedeposit(amount);
-			System.out.println("\n");
-			break;
-		case 'G':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter Transfer Amount");
-			System.out.println("-------------------------------------------------------");
-			amount = scanner.nextDouble();
-			
-			user.savingsbalancewithdraw(amount);
-			user.checkingbalancedeposit(amount);
-			System.out.println("\n");
-			break;
-		case 'H':
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter Transfer Amount");
-			System.out.println("-------------------------------------------------------");
-			amount = scanner.nextDouble();
+	public static void main(String[] args) throws SQLException{
+		DisplayMenu();
+	}
+	public static void DisplayMenu() throws SQLException {
+        Scanner userInput = new Scanner(System.in);
+        String READ_MENU;
+        boolean quit = false;
+     do {   
+        System.out.println("____________________________________________");
+        System.out.println("|  *****   Welcome to Bank World   ******  |");
+        System.out.println("____________________________________________");
+        System.out.println("| Options:                                 |");
+        System.out.println("|        1. Create Single User Bank Account|");
+        System.out.println("|        2. Create Joint User Bank Account |");
+        System.out.println("|        3. Log In                         |");
+        System.out.println("|        4. Employee                       |");
+        System.out.println("|        5. Bank Admin                     |");
+        System.out.println("|        6. Delete All Database Records    |");
+        System.out.println("|        7. Exit                           |");
+        System.out.println("____________________________________________");
 
-			user.savingsbalancedeposit(amount);
-			user.checkingbalancewithdraw(amount);
-			System.out.println("\n");
-			break;
-		case 'I':
-			quit = true;
-			break;
+        System.out.print("Select option: ");
 
-		default:
-			System.out.println("Invalid Option. Please try again");
-			break;
-			
-			}
-		}while(quit !=true); 
-			System.out.println("Thank you loyal customer!");
+        READ_MENU = userInput.next();
+
+
+        switch (READ_MENU) {
+            case "1":
+                BankingAccount bankingaccount = new BankingAccount();
+                bankingaccount.createAccount();
+                break;
+            case "2":
+            	BankingAccount jointaccount = new BankingAccount();
+            	jointaccount.createJointAccount();
+                break;
+            case "3":
+            	BankingAccount login = new BankingAccount();
+            	login.LogIn();
+                break;
+            case "4":
+                BankEmployee bankemployee = new BankEmployee();
+                bankemployee.UserApplicationStatus();
+                break;
+            case "5":
+                BankAdmin bankadmin = new BankAdmin();
+                bankadmin.ManageAccounts();
+                break;
+            case "6":
+                System.out.println("Deletion of all databases from server successful");
+                break;
+            case "7":
+            	System.out.println("See you soon!");
+            	quit = true;
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid selection");
+                break;
+        }
+        }while(!quit);
+        	
+        
+        
     }
-    
 }
+
 
 
